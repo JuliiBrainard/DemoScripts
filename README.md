@@ -1,4 +1,4 @@
 # DemoScripts
-Recent items I've created, portfolio of current skills
+Recent items I've created, portfolio to demonstrate current and recent skills
 
 Items are read only, all legal copyrights are claimed.
