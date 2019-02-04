@@ -1,0 +1,56 @@
+ISLABIKES DATABASE
+
+SELECT switch (
+day_code = 1, 'Sunday',
+day_code = 2, 'Monday',
+day_code = 3, 'Tuesday',
+day_code = 4, 'Wednesday',
+day_code = 5, 'Thursday',
+day_code = 6, 'Friday',
+true, 'Saturday'
+ ) AS [Day of week], model, round(avg(ratio), 2) AS [Avg %], count(*) AS n
+FROM IslabikePrices
+GROUP BY model, day_code;
+
+~~~~~~~~~
+
+SELECT Count(*) AS [n Sales], IslabikePrices.model, Round(Min(sold_for),3) AS [Min price], Round(Max(sold_for),3) AS [Max price], Round(Max(sold_for/Wheel_sizes.[New_price2012]),3) AS [Avg Ratio sold for/new price], Avg(Wheel_sizes.Wheel_size) AS [Wheel size]
+FROM IslabikePrices LEFT JOIN Wheel_sizes ON IslabikePrices.model = Wheel_sizes.Model
+GROUP BY IslabikePrices.model;
+
+
+
+
+===============================
+
+PARTs DATABASE
+
+Query = list of OccupPA with RetiredQ
+
+SELECT [Julii OccupPA], Q21Workstatus like " *retired*" AS retiredQ
+FROM Clean
+WHERE [Julii OccupPA] <> '' AND [Julii OccupPA] <>  '-';
+
+
+~~~~~~~~~~~~~~
+
+Query = LeisurePAbyWorkPA, version 1, similar to below but without JOIN
+
+SELECT round(avg(MOD_CYCLE_TOT + MOD_WALK_TOT+ MOD_SPORT_TOTAL), 2) AS avgMVPA, [Julii OccupPA], count(*) AS N
+FROM Clean
+WHERE [Julii OccupPA] <> '' AND [Julii OccupPA] <>  '-' AND Q21Workstatus not like "*retired*"
+GROUP BY [Julii OccupPA];
+
+
+
+~~~~~~~~~~~~~~
+
+Query = avgMVPA by OccupPA_descrip, with N count
+
+SELECT round(avg(MOD_CYCLE_TOT + MOD_WALK_TOT+ MOD_SPORT_TOTAL), 2) AS avgMVPA, OccupPA_descrip, count(*) AS N
+FROM Clean LEFT JOIN Occup_PA_categs ON Clean.[Julii OccupPA] = Occup_PA_categs.Occup_PA_categ
+WHERE [Julii OccupPA] <> '' AND [Julii OccupPA] <>  '-' AND Q21Workstatus not like "*retired*"
+GROUP BY [OccupPA_descrip];
+
+
+~~~~~~~~~~~~~~
